@@ -1,0 +1,44 @@
+.parallax {
+  /* The image used */
+  background-image: url("./images/apps.15160.14439434818564022.3318c674-5d77-439f-a11b-5f9c9ebb2aa3.jpeg");
+
+  /* Set a specific height */
+  height: 85vh;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+header {
+  background-color: lightgray;
+  border-bottom: black solid 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+
+body {
+  margin: 20%;
+}
+
+footer {
+  background-color: lightgray;
+  border-top: black solid 2px;
+  display: flex;
+  justify-content: center;
+}
+
+header > * {
+  margin: 1rem;
+  padding: 0.2rem;
+}
+
+.kryptonite {
+  width: auto;
+  height: 5rem;
+}
