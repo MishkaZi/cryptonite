@@ -53,10 +53,11 @@ h5 {
 .card-bottom {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 1rem;
   }
 
 .card {
-  height: 10rem;
+  height: auto;
   width: 18.5rem;
 }
 

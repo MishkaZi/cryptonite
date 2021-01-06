@@ -11,6 +11,13 @@
       crossorigin="anonymous"
     />
     <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"
@@ -21,47 +28,48 @@
   </head>
   <header>
     <h1>Cryptonite</h1>
-    
+
     <img
       class="kryptonite"
       src="./images/247-2476324_clipart-crystal.png"
       alt="kryptonite"
     />
-    
   </header>
   <body>
     <div class="parallax">
-        <nav class="navbar">
-            <ul class="nav nav-pills">
-              <li class="nav-item">
-                <!-- Adding or removing class active when button clicked -->
-                <a class="nav-link" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Live Reports</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-              </li>
-            </ul>
-    
-            <ul class="nav">
-              <li class="nav-item">
-                <input
-                  class="form-control mr-sm-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-              </li>
-              <li class="nav-item">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                  Search
-                </button>
-              </li>
-            </ul>
-          </nav>
+      <nav class="navbar">
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link home" onclick="home()">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link live-reports" onclick="liveReports()"
+              >Live Reports</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link about" onclick="about()">About</a>
+          </li>
+        </ul>
+
+        <ul class="nav">
+          <li class="nav-item">
+            <input
+              class="form-control mr-sm-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+              Search
+            </button>
+          </li>
+        </ul>
+      </nav>
       <div class="main">
+       
         <!-- Here we will append cards with Cryptos and other pages -->
       </div>
     </div>
