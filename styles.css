@@ -1,11 +1,6 @@
 .parallax {
-  /* The image used */
   background-image: url("./images/apps.15160.14439434818564022.3318c674-5d77-439f-a11b-5f9c9ebb2aa3.jpeg");
-
-  /* Set a specific height */
-  height: 100vh;
-
-  /* Create the parallax scrolling effect */
+  height: 90vh;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -61,10 +56,21 @@ h5 {
   width: 18.5rem;
 }
 
+.profile-picture{
+    height: 250px;
+    width: auto;
+
+}
+
 .main {
     display: flex;
     /* flex-direction: row; */
     flex-wrap: wrap;
+}
+
+.masthead-subheading{
+    background: rgb(204, 204, 204); /* Fallback for older browsers without RGBA-support */
+    background: rgba(280, 280, 280, 0.6);
 }
 
 @media only screen and (max-width: 576px) {
