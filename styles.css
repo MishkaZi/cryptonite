@@ -1,6 +1,6 @@
 .parallax {
   background-image: url("./images/apps.15160.14439434818564022.3318c674-5d77-439f-a11b-5f9c9ebb2aa3.jpeg");
-  height: 90vh;
+  height: 85vh;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -15,6 +15,7 @@ header {
   justify-content: space-between;
   align-items: center;
   background-color:rgba(200, 200, 200, 0.3)
+  
 }
 
 .nav-item {

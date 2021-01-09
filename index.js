@@ -1,26 +1,31 @@
-home();
+//Helping functions
 function clearActiveClassesAndMain() {
   $(".home").removeClass("active");
   $(".about").removeClass("active");
   $(".live-reports").removeClass("active");
   $(".main>*").remove();
 }
-function home() {
-  clearActiveClassesAndMain();
-  $(".home").addClass("active");
-  const usersUrl = "https://api.coingecko.com/api/v3/coins/";
-  const result = $.ajax({
-    method: "GET",
-    url: usersUrl,
-  });
+function activateActiveButton(buttonName){
+  $(`.${buttonName}`).addClass("active");
 
-  result.always((res) => {
-    for (let i = 0; i < 100; i++) {
+}
+
+const getAllCoins = () => {
+  return $.ajax({
+    method: "GET",
+    url: "https://api.coingecko.com/api/v3/coins/",
+  });
+};
+
+const updatePage = (coins) => {
+  try {
+    clearActiveClassesAndMain();
+    for (let i = 0; i < coins.length; i++) {
       $(".main").append(
         `<div class="card m-3">
             <div class="card-body">
             <div class="card-upper">
-                <h5 class="card-title">${res[i].symbol} <img src="${res[i].image.thumb}" alt="coin-image" /></h5>
+                <h5 class="card-title">${coins[i].symbol} <img src="${coins[i].image.thumb}" alt="coin-image" /></h5>
                 <div class="form-check form-switch">
                 <input
                     class="form-check-input"
@@ -30,42 +35,49 @@ function home() {
                 </div>
             </div>
 
-            <p class="card-text">${res[i].name} </p>
+            <p class="card-text">${coins[i].name} </p>
             <div class="card-bottom">
                 <button
                 data-bs-toggle="collapse"
-                data-bs-target="#more-info-${res[i].id}"
+                data-bs-target="#more-info-${coins[i].id}"
                 type="button"
                 class="btn btn-primary"
                 >
                 More Info
                 </button>
             </div>
-            <div id="more-info-${res[i].id}" class="collapse row">
+            <div id="more-info-${coins[i].id}" class="collapse row">
                 <div class="col-6">
-                    <p ><b>USD:</b> ${res[i].market_data.current_price.usd} <b>$</b></p>
-                    <p ><b>EUR:</b> ${res[i].market_data.current_price.eur} <b>€</b></p>
-                    <p ><b>ILS:</b> ${res[i].market_data.current_price.ils} <b>₪</b></p>
+                    <p ><b>USD:</b> ${coins[i].market_data.current_price.usd} <b>$</b></p>
+                    <p ><b>EUR:</b> ${coins[i].market_data.current_price.eur} <b>€</b></p>
+                    <p ><b>ILS:</b> ${coins[i].market_data.current_price.ils} <b>₪</b></p>
                 </div>
-                <img class="col-6" src="${res[i].image.small}" alt="coin-image" />
+                <img class="col-6" src="${coins[i].image.small}" alt="coin-image" />
             </div>
             </div>
         </div>`
       );
     }
-  });
-  result.fail((err) => console.log(err));
-}
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const home = async () => {
+  const coins = await getAllCoins();
+  updatePage(coins);
+  activateActiveButton('home');
+};
 
 function liveReports() {
   clearActiveClassesAndMain();
-  $(".live-reports").addClass("active");
+  activateActiveButton('live-reports');
   $(".main").append(`<h1>liveReports</h1>`);
 }
 
 function about() {
   clearActiveClassesAndMain();
-  $(".about").addClass("active");
+  activateActiveButton('about');
   $(".main").append(
     `
     <div class="d-flex justify-content-center flex-column">
@@ -98,7 +110,10 @@ function about() {
       />
 
       <div class="d-flex justify-content-center flex-column m-5">
-        <a href="https://www.facebook.com/mishazinoviev/"
+      <a href="https://mzwebdev.com/"
+      ><i class="fas fa-fw fa-address-card fa-2x"></i
+    ></a>  
+      <a href="https://www.facebook.com/mishazinoviev/"
           ><i class="fab fa-fw fa-facebook-f fa-2x"></i></a
         ><a href="https://twitter.com/mishazino"
           ><i class="fab fa-fw fa-twitter fa-2x"></i></a
@@ -113,3 +128,27 @@ function about() {
     `
   );
 }
+
+const search = async () => {
+  try {
+    const searchInput = $("#search-input").val();
+    const coins = await getAllCoins();
+    const filteredcoins = coins.filter((coin) => {
+      return coin.symbol.toLowerCase()===searchInput;
+    });
+    if (filteredcoins.length === 0) {
+      clearActiveClassesAndMain();
+      $(".main").append(`
+        <div>
+          <h1>There is no coins matching your search!</h1>
+        </div>
+    `);
+    } else {
+      updatePage(filteredcoins);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+home();
