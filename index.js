@@ -1,13 +1,29 @@
+
 let toggledCoins = [];
 
 //Local storage +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//Load from local storage more info coin
-const loadFromLocalStorageMoreInfoCoin = async (id) => {
-  if (localStorage.getItem(`more-info-coin-${id}`) !== null) {
-    let retrievedCoin = localStorage.getItem(`more-info-coin-${id}`);
+const loadFromLocalStorageToggledCoins = () => {
+  if (localStorage.getItem("toggled-coins") !== null) {
+    let retrievedToggledCoins = localStorage.getItem("toggled-coins");
+    toggledCoins = JSON.parse(retrievedToggledCoins);
+  } else {
+  }
+  return toggledCoins;
+};
+
+toggledCoins = loadFromLocalStorageToggledCoins();
+
+const saveToLocalStorageToggledCoins = () => {
+  localStorage.setItem("toggled-coins", JSON.stringify(toggledCoins));
+};
+
+//Load from session storage more info coin
+const loadFromSessionStorageMoreInfoCoin = async (id) => {
+  if (sessionStorage.getItem(`more-info-coin-${id}`) !== null) {
+    let retrievedCoin = sessionStorage.getItem(`more-info-coin-${id}`);
     coin = JSON.parse(retrievedCoin);
     setTimeout(() => {
-      localStorage.removeItem(`more-info-coin-${id}`);
+      sessionStorage.removeItem(`more-info-coin-${id}`);
     }, 120000);
   } else {
     coin = await getCoin(id);
@@ -15,12 +31,20 @@ const loadFromLocalStorageMoreInfoCoin = async (id) => {
   return coin;
 };
 
-//Save to local storage more info coin
-const saveToLocalStorageMoreInfoCoin = (coin) => {
-  localStorage.setItem(`more-info-coin-${coin.id}`, JSON.stringify(coin));
+//Save to session storage more info coin
+const saveToSessionStorageMoreInfoCoin = (coin) => {
+  sessionStorage.setItem(`more-info-coin-${coin.id}`, JSON.stringify(coin));
 };
 
 //Helping functions ***********************************************************
+const showLoader = () => {
+  $(".main").append(`
+  <div class="loader" id="loader">
+      <img src="./loader.svg" alt="loader" />
+  </div>
+`);
+};
+
 const clearActiveClassesAndMain = () => {
   $(".home").removeClass("active");
   $(".about").removeClass("active");
@@ -33,6 +57,7 @@ const activateActiveButton = (buttonName) => {
 };
 
 //AJAX calls *******************************************************************
+
 const getAllCoins = () => {
   return $.ajax({
     method: "GET",
@@ -40,10 +65,18 @@ const getAllCoins = () => {
   });
 };
 
-const getCoinPrice = (id) => {
+const getCoinsPrices = () => {
+  const beggining = "https://min-api.cryptocompare.com/data/pricemulti?fsyms=";
+  let coinsSymbols = toggledCoins[0].symbol;
+  for (let i = 1; i < toggledCoins.length; i++) {
+    coinsSymbols = coinsSymbols + "," + toggledCoins[i].symbol;
+  }
+  const ending = "&tsyms=USD";
+  const fullURL = beggining + coinsSymbols + ending;
+  console.log(fullURL);
   return $.ajax({
     method: "GET",
-    url: `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${id}&tsyms=USD`,
+    url: fullURL,
   });
 };
 
@@ -53,7 +86,7 @@ const getCoin = (id) => {
     url: `https://api.coingecko.com/api/v3/coins/${id}`,
   });
 };
-
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //Toggle - untoggle toggler :)
 const toggleUntoggle = (id) => {
@@ -87,4 +120,5 @@ const search = async () => {
   }
 };
 
-home();
+// home();
+liveReports();

@@ -1,10 +1,13 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 const updatePage = (coins) => {
-    try {
-      clearActiveClassesAndMain();
-      for (let i = 0; i < coins.length; i++) {
-        $(".main").append(
-          `<div class="card m-3">
+  try {
+    clearActiveClassesAndMain();
+    if (window.location.reload) {
+      sessionStorage.clear();
+    }
+    for (let i = 0; i < coins.length; i++) {
+      $(".main").append(
+        `<div class="card m-3">
               <div class="card-body">
               <div class="card-upper">
                   <h5 class="card-title">${coins[i].symbol} <img src="${coins[i].image.thumb}" alt="coin-image" /></h5>
@@ -33,97 +36,88 @@ const updatePage = (coins) => {
   
               </div>
           </div>`
-        );
-        toggleUntoggle(coins[i].id);
-      }
-  
-      //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      //Toggle
-      $(".form-check-input").click((e) => {
-        const id = e.target.dataset.id;
-        if ($(`#${id}-toggle`).is(":checked")) {
-          if (toggledCoins.length == 5) {
-            const wantedCoin = id;
-            console.log("Show menu to untoggle one of coins.");
-            updatePage(toggledCoins);
-  
-            $(".main").append(
-              `<div>
+      );
+      toggleUntoggle(coins[i].id);
+    }
+
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //Toggle
+    $(".form-check-input").click((e) => {
+      const id = e.target.dataset.id;
+      if ($(`#${id}-toggle`).is(":checked")) {
+        if (toggledCoins.length == 5) {
+          const wantedCoin = id;
+          updatePage(toggledCoins);
+
+          $(".main").append(
+            `<div>
                   <h1>Please untoggle one coin before adding this coin, or: </h1>
                </div>
               <button id="btc" type="button" onClick="home()"
                   class="btn btn-danger cancel">
                   Cancel
               </button>`
-            );
-            console.log(wantedCoin);
-            $(".form-check-input").click((e) => {
-              const oldCoin = e.target.dataset.id
-              //Delete oldCoin from toogledCoins
-              toggledCoins = toggledCoins.filter((coin) => {
-                return coin.id !== oldCoin;
-              });
-              //Add wantedCoin to roggledCoins
-              let coin = 0;
+          );
+          $(".form-check-input").click((e) => {
+            const oldCoin = e.target.dataset.id;
+            //Delete oldCoin from toogledCoins
+            toggledCoins = toggledCoins.filter((coin) => {
+              return coin.id !== oldCoin;
+            });
+            //Add wantedCoin to roggledCoins
+            let coin = 0;
             for (let i = 0; i < coins.length; i++) {
               if (coins[i].id === wantedCoin) {
                 coin = coins[i];
               }
             }
-              toggledCoins.push(coin);
-
-              //Get back to home();
-              home();
-            });
-          } else {
-            let coin = 0;
-            for (let i = 0; i < coins.length; i++) {
-              if (coins[i].id === id) {
-                coin = coins[i];
-              }
-            }
-  
-            console.log(coin);
             toggledCoins.push(coin);
-            console.log(toggledCoins);
-          }
-        } else {
-          toggledCoins = toggledCoins.filter((coin) => {
-            return coin.id !== id;
+            saveToLocalStorageToggledCoins();
+            //Get back to home();
+            home();
           });
-          console.log(toggledCoins);
+        } else {
+          let coin = 0;
+          for (let i = 0; i < coins.length; i++) {
+            if (coins[i].id === id) {
+              coin = coins[i];
+            }
+          }
+          toggledCoins.push(coin);
+          saveToLocalStorageToggledCoins();
         }
-      });
-
-      const cancel=()=>{
-
+      } else {
+        toggledCoins = toggledCoins.filter((coin) => {
+          return coin.id !== id;
+        });
+        saveToLocalStorageToggledCoins();
       }
-  
-      //More info ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-      $(".more-info-button").click(async (e) => {
-        try {
-          const id = e.target.id;
-          if (!$(`#${id}`).hasClass("collapsed")) {
-            const coin = await loadFromLocalStorageMoreInfoCoin(id);
-            saveToLocalStorageMoreInfoCoin(coin);
-            $(`#more-info-${coin.id}`).append(
-              `       <div class="col-6">
+    });
+
+    //More info ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    $(".more-info-button").click(async (e) => {
+      try {
+        const id = e.target.id;
+        if (!$(`#${id}`).hasClass("collapsed")) {
+          const coin = await loadFromSessionStorageMoreInfoCoin(id);
+          saveToSessionStorageMoreInfoCoin(coin);
+          $(`#more-info-${coin.id}`).append(
+            `       <div class="col-6">
                             <p ><b>USD:</b> ${coin.market_data.current_price.usd} <b>$</b></p>
                             <p ><b>EUR:</b> ${coin.market_data.current_price.eur} <b>€</b></p>
                             <p ><b>ILS:</b> ${coin.market_data.current_price.ils} <b>₪</b></p>
                         </div>
                         <img class="col-6" src="${coin.image.small}" alt="coin-image" />
                 `
-            );
-          } else {
-            $(`#more-info-${id}>*`).remove();
-          }
-        } catch (error) {
-          console.log("more info" + error);
+          );
+        } else {
+          $(`#more-info-${id}>*`).remove();
         }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
+      } catch (error) {
+        console.log("more info" + error);
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
