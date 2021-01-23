@@ -38,11 +38,13 @@ const updatePage = (coins) => {
           </div>`
       );
       toggleUntoggle(coins[i].id);
+      removeLoader();
     }
 
     //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     //Toggle
     $(".form-check-input").click((e) => {
+      showLoader();
       const id = e.target.dataset.id;
       if ($(`#${id}-toggle`).is(":checked")) {
         if (toggledCoins.length == 5) {
@@ -53,12 +55,13 @@ const updatePage = (coins) => {
             `<div>
                   <h1>Please untoggle one coin before adding this coin, or: </h1>
                </div>
-              <button id="btc" type="button" onClick="home()"
+              <button id="cancel" type="button" onClick="home()"
                   class="btn btn-danger cancel">
                   Cancel
               </button>`
           );
           $(".form-check-input").click((e) => {
+            showLoader();
             const oldCoin = e.target.dataset.id;
             //Delete oldCoin from toogledCoins
             toggledCoins = toggledCoins.filter((coin) => {
@@ -74,6 +77,7 @@ const updatePage = (coins) => {
             toggledCoins.push(coin);
             saveToLocalStorageToggledCoins();
             //Get back to home();
+            // removeLoader();
             home();
           });
         } else {
@@ -92,10 +96,12 @@ const updatePage = (coins) => {
         });
         saveToLocalStorageToggledCoins();
       }
+      removeLoader();
     });
 
     //More info ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     $(".more-info-button").click(async (e) => {
+      showLoader();
       try {
         const id = e.target.id;
         if (!$(`#${id}`).hasClass("collapsed")) {
@@ -116,6 +122,7 @@ const updatePage = (coins) => {
       } catch (error) {
         console.log("more info" + error);
       }
+      removeLoader();
     });
   } catch (error) {
     console.log(error);

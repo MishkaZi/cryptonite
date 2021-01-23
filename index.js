@@ -9,6 +9,9 @@ const showLoader = () => {
   </div>
 `);
 };
+const removeLoader=()=>{
+  $('#loader').remove();
+}
 
 const clearActiveClassesAndMain = () => {
   $(".home").removeClass("active");

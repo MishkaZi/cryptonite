@@ -1,6 +1,7 @@
 const liveReports = async () => {
   try {
     clearActiveClassesAndMain();
+
     activateActiveButton("live-reports");
     if (toggledCoins.length === 0) {
       $(".main").append(`
@@ -46,7 +47,7 @@ const liveReports = async () => {
         dataPoints: [],
       });
     }
-
+    showLoader();
     const updateChart = async () => {
       const coinsPrices = await getCoinsPrices();
       let time = new Date().toLocaleTimeString();
@@ -57,8 +58,10 @@ const liveReports = async () => {
           y: coinsPrices[Object.keys(coinsPrices)[i]].USD,
           label: time,
         });
-
+  
       }
+      removeLoader();
+    
       chart.render();
     };
 

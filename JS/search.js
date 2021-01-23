@@ -1,5 +1,6 @@
 const search = async () => {
     try {
+      showLoader();
       const searchInput = $("#search-input").val();
       const coins = await getAllCoins();
       const filteredcoins = coins.filter((coin) => {
@@ -15,6 +16,7 @@ const search = async () => {
       } else {
         updatePage(filteredcoins);
       }
+      removeLoader();
     } catch (error) {
       console.log(error);
     }
