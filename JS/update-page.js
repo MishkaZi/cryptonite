@@ -51,14 +51,16 @@ const updatePage = (coins) => {
           const wantedCoin = id;
           updatePage(toggledCoins);
 
-          $(".main").append(
-            `<div>
-                  <h1>Please untoggle one coin before adding this coin, or: </h1>
-               </div>
-              <button id="cancel" type="button" onClick="home()"
-                  class="btn btn-danger cancel">
-                  Cancel
-              </button>`
+          $(".main").prepend(
+            ` <div class="col-lg-12 d-flex flex-column justify-content-center  more-than-five">
+                <div class="more-than-five-txt">
+                    <h1>Please untoggle one coin before adding this coin, or click cancel. </h1>
+                </div>
+                <button id="cancel" type="button" onClick="home()"
+                    class="btn btn-danger align-self-center cancel">
+                    Cancel
+                </button>
+              </div>`
           );
           $(".form-check-input").click((e) => {
             showLoader();
